@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MATSUOKA YUYA | Portfolio</title>
+<style>
+  /* ===== RESET ===== */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Arial', sans-serif; background: #fff; color: #111; }
+
+  /* ===== NAV ===== */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 48px; height: 80px;
+    background: #fff; border-bottom: 1.5px solid #111;
+  }
+  .nav-logo { font-size: 14px; font-weight: bold; letter-spacing: 3px; }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a {
+    font-size: 10px; letter-spacing: 2px; font-weight: 600;
+    color: #111; text-decoration: none;
+    position: relative; padding-bottom: 3px;
+    transition: color .2s;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: 0; left: 0;
+    width: 0; height: 1.5px; background: #1565C0;
+    transition: width .3s;
+  }
+  .nav-links a:hover { color: #1565C0; }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative; height: 420px;
+    background: linear-gradient(160deg, #bbdefb 0%, #e3f2fd 55%, #e8eaf6 100%);
+    overflow: hidden; display: flex; align-items: flex-end;
+  }
+  .hero-accent { position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: #1565C0; }
+  .hero-photo {
+    position: absolute; right: 100px; top: 0%;
+    width: 340px; height: 100%;
+    border-radius: 0;
+    overflow: hidden;
+  }
+  .hero-photo span { font-size: 10px; color: #90caf9; text-align: center; line-height: 1.6; }
+  .hero-text { padding: 40px 48px; }
+  .hero-label {
+    font-size: 16px; letter-spacing: 4px; color: #1565C0; margin-bottom: 16px;
+    opacity: 0; transform: translateY(16px);
+    animation: fadeUp .7s .2s forwards;
+  }
+  .hero-name {
+    font-family: 'Georgia', serif; font-size: 52px; font-weight: bold;
+    color: #111; line-height: 1.0; letter-spacing: 5px;
+    opacity: 0; transform: translateY(20px);
+    animation: fadeUp .7s .4s forwards;
+  }
+  .hero-name-en {
+    font-size: 13px; letter-spacing: 4px; color: #555; margin-top: 10px;
+    opacity: 0; transform: translateY(16px);
+    animation: fadeUp .7s .6s forwards;
+  }
+  .hero-sub {
+    font-size: 10px; color: #555; margin-top: 10px; letter-spacing: 2px;
+    opacity: 0; transform: translateY(16px);
+    animation: fadeUp .7s .8s forwards;
+  }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+  /* ===== SECTION COMMON ===== */
+  .section { padding: 64px 48px; border-bottom: 1px solid #eee; }
+  .section-alt { background: #f7fafd; }
+  .section-label { font-size: 9px; letter-spacing: 4px; color: #1565C0; margin-bottom: 8px; }
+  .section-title { font-family: 'Georgia', serif; font-size: 32px; color: #111; margin-bottom: 16px; }
+  .divider { width: 40px; height: 2px; background: #1565C0; margin-bottom: 32px; }
+
+  /* ===== SCROLL REVEAL ===== */
+  .reveal { opacity: 0; transform: translateY(32px); transition: opacity .7s, transform .7s; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ===== ABOUT ===== */
+  .about-text { font-size: 12px; color: #444; line-height: 2.0; margin-bottom: 24px; max-width: 640px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag {
+    font-size: 9px; padding: 5px 14px;
+    border: 1px solid #1565C0; color: #1565C0;
+    border-radius: 20px; cursor: default;
+    transition: background .2s, color .2s;
+  }
+  .tag:hover { background: #1565C0; color: #fff; }
+
+  /* ===== STRENGTHS ===== */
+  .strengths-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .strength-card {
+    padding: 20px; border-left: 3px solid #1565C0; background: #fff;
+    transition: box-shadow .25s, transform .25s; cursor: pointer;
+  }
+  .strength-card:hover { box-shadow: 0 6px 20px rgba(21,101,192,.1); transform: scale(1.05); }
+  .strength-card.weak { border-left-color: #90a4ae; }
+  .s-label { font-size: 8px; letter-spacing: 2px; color: #1565C0; margin-bottom: 6px; }
+  .strength-card.weak .s-label { color: #607d8b; }
+  .s-title { font-size: 11px; font-weight: bold; color: #111; margin-bottom: 8px; }
+  .s-desc { font-size: 10px; color: #666; line-height: 1.8; }
+
+  /* ===== SKILLS ===== */
+  .skills-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .skill-card {
+    background: #f5f8fc; border-left: 3px solid #1565C0; padding: 14px;
+    transition: transform .2s;
+  }
+  .skill-card:hover { transform: translateY(-4px); }
+  .skill-name { font-size: 11px; font-weight: bold; color: #111; margin-bottom: 8px; }
+  .skill-bar-bg { background: #dce8f5; height: 3px; border-radius: 2px; margin-bottom: 4px; overflow: hidden; }
+  .skill-bar { height: 3px; border-radius: 2px; background: #1565C0; width: 0; transition: width 1.2s ease; }
+  .skill-level { font-size: 8px; color: #888; }
+
+  /* ===== EXPERIENCE ===== */
+  .exp-item { display: flex; gap: 24px; margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid #f0f0f0; }
+  .exp-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .exp-period { font-size: 9px; color: #1565C0; letter-spacing: 1px; width: 120px; flex-shrink: 0; padding-top: 2px; }
+  .exp-title { font-size: 13px; font-weight: bold; color: #111; margin-bottom: 6px; }
+  .exp-desc { font-size: 10px; color: #555; line-height: 1.9; }
+
+  /* ===== WORKS ===== */
+  .works-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .work-card {
+    background: #fff; border: 1px solid #e0e0e0; border-radius: 4px; overflow: hidden;
+    transition: transform .25s, box-shadow .25s; cursor: pointer;
+  }
+  .work-card:hover { transform: translateY(-6px); box-shadow: 0 10px 28px rgba(21,101,192,.15); }
+  .work-img {
+    height: 200px;
+    background: linear-gradient(120deg, #bbdefb, #e8eaf6);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .work-img span { font-size: 9px; color: #90caf9; }
+  .work-info { padding: 14px 16px; }
+  .work-title { font-size: 12px; font-weight: bold; color: #111; margin-bottom: 5px; }
+  .work-tech { font-size: 9px; color: #1565C0; }
+
+  /* ===== HOBBY ===== */
+  .hobby-row { display: flex; gap: 16px; }
+  .hobby-card {
+    flex: 0 0 auto; background: #f5f8fc; border-radius: 4px;
+    border-top: 3px solid #1565C0; overflow: hidden;
+    transition: transform .25s, box-shadow .25s; cursor: pointer; width: 280px;
+  }
+  .hobby-card:hover { transform: translateY(-6px); box-shadow: 0 10px 28px rgba(21,101,192,.15); }
+  .hobby-img {
+    height: 200px; background: linear-gradient(120deg, #bbdefb, #e8eaf6);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hobby-img span { font-size: 9px; color: #90caf9; }
+  .hobby-body { padding: 14px; text-align: center; }
+  .hobby-icon { font-size: 24px; margin-bottom: 6px; }
+  .hobby-name { font-size: 10px; font-weight: bold; color: #444; }
+
+  /* ===== CONTACT ===== */
+  .contact-section { background: #0D47A1; padding: 64px 48px; }
+  .contact-section .section-label { color: #90caf9; }
+  .contact-section .section-title { color: #fff; }
+  .contact-section .divider { background: #64b5f6; }
+  .contact-desc { font-size: 11px; color: #bbdefb; line-height: 1.9; margin-bottom: 24px; }
+  .contact-links { display: flex; flex-direction: column; gap: 12px; }
+  .contact-link { display: flex; align-items: center; gap: 12px; font-size: 11px; color: #fff; transition: opacity .2s; }
+  .contact-link:hover { opacity: .7; }
+  .contact-dot { width: 7px; height: 7px; background: #64b5f6; border-radius: 50%; flex-shrink: 0; }
+
+  /* ===== FOOTER ===== */
+  footer { padding: 20px 48px; background: #111; text-align: center; }
+  footer p { font-size: 9px; color: #888; letter-spacing: 2px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">YUYA MATSUOKA</div>
+  <div class="nav-links">
+    <a href="#about">ABOUT</a>
+    <a href="#skills">SKILLS</a>
+    <a href="#works">WORKS</a>
+    <a href="#hobby">HOBBY</a>
+    <a href="#contact">CONTACT</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-accent"></div>
+  <div class="hero-photo">
+  <img src="photo.jpg" alt="松岡佑哉" style="width:100%; height:100%; object-fit:cover; object-position: center;">
+</div>
+  <div class="hero-text">
+    <div class="hero-label">MEIJO UNIV. — INFORMATION ENGINEERING</div>
+    <div class="hero-name">松岡 佑哉</div>
+    <div class="hero-name-en">MATSUOKA &nbsp; YUYA</div>
+    <div class="hero-sub">IT CONSULTANT CANDIDATE — CLASS OF 2028</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about" class="section reveal">
+  <div class="section-label">01 — ABOUT</div>
+  <div class="section-title">About Me</div>
+  <div class="divider"></div>
+  <p class="about-text">名城大学 情報工学科3年。データを起点に、周りを巻き込みながら課題を解決することが得意です。ビストロのアルバイトでは1ヶ月間の注文データを独自に分析し、提供遅延の原因を特定。LINEを活用した改善策でサービス時間を約10分短縮しました。ITコンサルタントとして、提案で終わらず変化が届くまで伴走できる人材を目指しています。</p>
+  <div class="tags">
+    <span class="tag">ITコンサル志望</span>
+    <span class="tag">UI/UX</span>
+    <span class="tag">データ分析</span>
+    <span class="tag">伴走型</span>
+    <span class="tag">課題発見力</span>
+  </div>
+</section>
+
+<!-- STRENGTHS -->
+<section class="section section-alt reveal">
+  <div class="section-label">02 — STRENGTHS</div>
+  <div class="section-title">Strengths & Weakness</div>
+  <div class="divider"></div>
+  <div class="strengths-grid">
+    <div class="strength-card">
+      <div class="s-label">STRENGTH</div>
+      <div class="s-title">データで課題を構造化し、チームを動かす力</div>
+      <div class="s-desc">データを起点に、周りを巻き込みながら課題を解決していく力です。ビストロのアルバイトで、ピーク時間帯に提供が遅れるという課題に気づき、1ヶ月分の注文データを自分で分析しました。原因は準備に時間がかかるメニューへの注文集中でした。「経験でわかる」と言うスタッフにも数字を見せながら一緒に考え、お客様の属性ごとにおすすめメニューを変えるガイドラインをLINEで共有しました。提供時間を約10分短縮することができました。根拠があれば人は動くと実感し、データと対話を組み合わせた課題解決が自分の強みだと気づいた経験です。</div>
+    </div>
+    <div class="strength-card weak">
+      <div class="s-label">WEAKNESS</div>
+      <div class="s-title">ひとりで抱え込みすぎるところ</div>
+      <div class="s-desc">ひとりで抱え込みすぎるところです。ビストロでのデータ分析も、最初はひとりで黙々と進めていました。途中で行き詰まっても相談できず、時間をかけすぎてしまいました。もっと早く周りを巻き込めばよかったと後から気づきました。この経験から「まず共有する」を意識するようになり、早い段階で周りに状況を伝え、一緒に考える習慣を身につけています。</div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="section reveal">
+  <div class="section-label">03 — SKILLS</div>
+  <div class="section-title">Skills</div>
+  <div class="divider"></div>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-name">Java</div>
+      <div class="skill-bar-bg"><div class="skill-bar" data-w="60%"></div></div>
+      <div class="skill-level">授業レベル</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">Python</div>
+      <div class="skill-bar-bg"><div class="skill-bar" data-w="50%"></div></div>
+      <div class="skill-level">参考書あり</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">Figma</div>
+      <div class="skill-bar-bg"><div class="skill-bar" data-w="70%"></div></div>
+      <div class="skill-level">自主学習</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">HTML/CSS</div>
+      <div class="skill-bar-bg"><div class="skill-bar" data-w="45%"></div></div>
+      <div class="skill-level">学習中</div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="section section-alt reveal">
+  <div class="section-label">04 — EXPERIENCE</div>
+  <div class="section-title">Experience</div>
+  <div class="divider"></div>
+  <div class="exp-item">
+    <div class="exp-period">2025 — PRESENT</div>
+    <div>
+      <div class="exp-title">ビストロ アルバイト</div>
+      <div class="exp-desc">注文データを1ヶ月かけて分析し、ピーク時の提供遅延を特定。LINEを活用したスタッフ連携の仕組みを構築し、サービス提供時間を約10分短縮。</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- WORKS -->
+<section id="works" class="section reveal">
+  <div class="section-label">05 — WORKS</div>
+  <div class="section-title">Works</div>
+  <div class="divider"></div>
+  <div class="works-grid">
+    <div class="work-card">
+      <div class="work-img">
+  <img src="portfolio.png" alt="就活ポートフォリオサイト" style="width:100%; height:100%; object-fit:cover;">
+</div>
+      <div class="work-info">
+        <div class="work-title">就活ポートフォリオサイト</div>
+        <div class="work-tech">Figma / HTML / CSS / JavaScript</div>
+        <a href="https://www.figma.com/design/PrrckedW2yUwNMnkML9iqN/" target="_blank" style="display:inline-block; margin-top:8px; font-size:9px; color:#1565C0; text-decoration:none;">Figmaで見る →</a>
+      </div>
+    </div>
+    <div class="work-card">
+     <div class="work-img">
+  <img src="chaeunwoo.png" alt="CHA EUN-WOO ポートフォリオ" style="width:100%; height:100%; object-fit:cover;">
+</div>
+      <div class="work-info">
+        <div class="work-title">CHA EUN-WOO ポートフォリオ</div>
+        <div class="work-tech">Figma</div>
+        <a href="https://www.figma.com/design/62u75cgsOhh4D6UnhWdply/" target="_blank" style="display:inline-block; margin-top:8px; font-size:9px; color:#1565C0; text-decoration:none;">Figmaで見る →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOBBY -->
+<section id="hobby" class="section section-alt reveal">
+  <div class="section-label">06 — HOBBY</div>
+  <div class="section-title">Hobby</div>
+  <div class="divider"></div>
+  <div class="hobby-row">
+    <div class="hobby-card">
+      <div class="hobby-img">
+  <img src="sauna.jpg" alt="サウナ" style="width:100%; height:100%; object-fit:cover;">
+</div>
+      <div class="hobby-body">
+        <div class="hobby-icon">🧖</div>
+        <div class="hobby-name">サウナ</div>
+      </div>
+    </div>
+    <div class="hobby-card">
+      <div class="hobby-img">
+  <img src="foods.jpg" alt="おいしいもの巡り" style="width:100%; height:100%; object-fit:cover;">
+</div>
+      <div class="hobby-body">
+        <div class="hobby-icon">🍽️</div>
+        <div class="hobby-name">おいしいもの巡り</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact-section reveal">
+  <div class="section-label">07 — CONTACT</div>
+  <div class="section-title">Contact</div>
+  <div class="divider"></div>
+  <p class="contact-desc">お気軽にご連絡ください。</p>
+  <div class="contact-links">
+    <div class="contact-link"><div class="contact-dot"></div>matsu20060117@gmail.com</div>
+    <div class="contact-link"><div class="contact-dot"></div>GitHub（追記予定）</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 YUYA MATSUOKA</p>
+</footer>
+
+<script>
+  // スクロールリビール + スキルバー
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        e.target.querySelectorAll('.skill-bar[data-w]').forEach(bar => {
+          bar.style.width = bar.dataset.w;
+        });
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
